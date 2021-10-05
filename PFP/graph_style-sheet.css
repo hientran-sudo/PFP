@@ -1,0 +1,13 @@
+﻿body {
+    height: 600px;
+    width: 2800px;
+    margin: 2;
+    padding: 0;
+}
+
+#padding {
+    height: 20px;
+    width: 100%;
+    margin: 2;
+    padding: 0;
+}

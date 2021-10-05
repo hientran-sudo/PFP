@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<!-- reference: https://bl.ocks.org/mbostock/899711 -->
+<!--Author: Prachi Oke-->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <link rel="shortcut icon" href="about:blank">
+    <!-- <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" />-->
+    <link rel="stylesheet" href="graph_style-sheet.css" />
+
+    <script src="Scripts/bootstrap.min.js"></script>
+
+</head>
+<body>
+    <script src="//d3js.org/d3.v3.min.js"></script>
+    <script>
+        // Get cityname form local storage
+        localStorage.setItem("cityname", "Atlanta");
+        var citynm = localStorage.getItem("cityname");
+        function paramTempCalculation(d, daynum, citynm, weatherParam) {
+            var ObarX1, ObarX2, ObarWidth, GbarX1, GbarX2, GbarWidth, MedianX, range, rangetx, lowrange, highrange, p10, p90, medianval;
+            var finalmedian, f, delta, L, R;
+            var Const = 90;
+            var W = 100;    // the width of the region to draw as 100%
+
+            if (weatherParam == 1) //for Temperature
+            {
+                delta = 3;
+                range = d.value[daynum][citynm].temperature.Range;
+                rangetxt = range.split("-", 2);
+                lowrange = rangetxt[0].split("F", 1);
+                highrange = rangetxt[1].split("F", 1);
+                p10 = Number(lowrange);
+                p90 = Number(highrange);
+
+                medianval = d.value[daynum][citynm].temperature.Median;
+                finalmedian = medianval.split("F", 1);
+                f = Number(finalmedian);
+                L = Math.min(p10, f - delta);
+                R = Math.max(p90, f + delta);
+            }
+            if (weatherParam == 2) //for Precipitation
+            {
+                delta = 0.04;
+                range = d.value[daynum][citynm].precipitation.Range;
+                rangetxt = range.split("-", 2);
+                lowrange = rangetxt[0].split("in.", 1);
+                highrange = rangetxt[1].split("in.", 1);
+                p10 = Number(lowrange);
+                p90 = Number(highrange);
+
+                medianval = d.value[daynum][citynm].precipitation.Median;
+                finalmedian = medianval.split("in.", 1);
+                f = Number(finalmedian);
+
+                L = Math.min(p10, f - delta);
+                R = Math.max(p90, f + delta);
+            }
+
+            ObarX1 = W * ((p10 - L) / (R - L));
+            ObarX1 = Math.round(ObarX1) + Const;
+
+            ObarX2 = W * ((p90 - L) / (R - L));
+            ObarX2 = Math.round(ObarX2) + Const;
+
+            ObarWidth = (ObarX2 - ObarX1) + 1;
+
+            GbarX1 = W * ((f - delta - L) / (R - L));
+            GbarX1 = Math.round(GbarX1) + Const;
+
+            GbarX2 = W * ((f + delta - L) / (R - L));
+            GbarX2 = Math.round(GbarX2) + Const;
+
+            GbarWidth = (GbarX2 - GbarX1) + 1;
+            MedianX = W * ((f - L) / (R - L));
+            MedianX = Math.round(MedianX) + Const;
+
+            var minL = Math.min(ObarX1, GbarX1);
+            var maxR = Math.max(ObarX2, GbarX2);
+            // console.log(ObarX1);
+
+
+            return [ObarX1, ObarWidth, GbarX1, GbarWidth, MedianX, minL, maxR];
+        }
+
+        // Headline
+        var jsonOtherLbl = [
+            { "x_axis": 50, "y_axis": 50, "lbl": citynm + "-7 Day Forecast", "font_size": 48 },
+            { "x_axis": 100, "y_axis": 80, "lbl": "Monday", "font_size": 30 },
+            { "x_axis": 500, "y_axis": 80, "lbl": "Tuesday", "font_size": 30 },
+            { "x_axis": 900, "y_axis": 80, "lbl": "Wednesday", "font_size": 30 },
+            { "x_axis": 1300, "y_axis": 80, "lbl": "Thursday", "font_size": 30 },
+            { "x_axis": 1700, "y_axis": 80, "lbl": "Friday", "font_size": 30 },
+            { "x_axis": 2100, "y_axis": 80, "lbl": "Saturday", "font_size": 30 },
+            { "x_axis": 2500, "y_axis": 80, "lbl": "Sunday", "font_size": 30 },
+            { "x_axis": 5, "y_axis": 110, "lbl": "Grey region indicates range of \261 3\260F", "font_size": 16 }];
+
+        var svgContainer = d3.select("body").append("svg")
+            .attr("width", 2800)
+            .attr("height", 150)
+            .attr("class", "graph");
+
+        var otherlbls = svgContainer.selectAll("text")
+            .data(jsonOtherLbl)
+            .enter()
+            .append("text");
+
+        var otherlblAttributes = otherlbls
+            .attr("x", function (d) { return d.x_axis; })
+            .attr("y", function (d) { return d.y_axis; })
+            .attr("font-size", function (d) { return d.font_size; })
+            .text(function (d) { return d.lbl; });
+
+
+        // Reading data from the json
+        d3.json("RealGraphData.json", function (error, data) {
+            if (error) throw error;
+            //document.getElementById("demo").innerHTML = citynm+"- 7 Day Forecast";
+
+            //attach an SVG Container to the body
+            var totalwidth, widthRect1, widthRect2, xOfRect1, rect1lblxpos, rect2lblxpos, decide, newxpos, newwidth, medx, weatherParam;
+            var alldays = ["day0", "day1", "day2", "day3", "day4", "day5", "day6"];
+
+            //new graph viz for temp
+            for (var i = 0; i < alldays.length; i++) {
+
+                var daynum = alldays[i];
+                weatherParam = 1;
+
+                var svgContainer = d3.select("body").append("svg")
+                    .attr("width", 400)  //2150
+                    .attr("height", 250);  //300
+
+                // make the svg read external JSON data
+                var marker = svgContainer.selectAll("svg")
+                    .data(d3.entries(data))
+                    .enter()
+                    .append("svg")
+                    .attr("class", "marker");
+
+
+                // attach a rect to svg container. This is the -3 to +3 rect. Gray Rect
+                var grayrect = marker.append("rect")
+                    .attr("x", function (d) {
+                        var boxParam = paramTempCalculation(d, daynum, citynm, weatherParam);
+                        var GrayXPos = boxParam[2];
+                        return GrayXPos;
+                    })
+                    .attr("y", 110)
+                    .attr("width", function (d) {
+                        var boxParam = paramTempCalculation(d, daynum, citynm, weatherParam);
+                        var GrayWidth = boxParam[3];
+                        return GrayWidth;
+                    })
+                    .attr("height", 50)
+                    .attr("fill", "#85929E");
+
+                // attach a rect to svg container. This is the range rect. Orange Rect
+                var rangerect = marker.append("rect")
+                    .attr("x", function (d) {
+                        var boxParam = paramTempCalculation(d, daynum, citynm, weatherParam);
+                        var OrangeXPos = boxParam[0];
+                        return OrangeXPos;
+                    })
+                    .attr("y", 120)
+                    .attr("width", function (d) {
+                        var boxParam = paramTempCalculation(d, daynum, citynm, weatherParam);
+                        var OrangeWidth = boxParam[1];
+                        return OrangeWidth;
+                    })
+                    .attr("height", 30)
+                    .attr("fill", "#ffb31a");
+
+                //Draw the median line
+                var medianline = marker.append("line")
+                    .attr("x1", function (d) {
+                        var boxParam = paramTempCalculation(d, daynum, citynm, weatherParam);
+                        var MedXPos = boxParam[4];
+                        return MedXPos;
+                    })
+                    .attr("y1", 120)
+                    .attr("x2", function (d) {
+                        var boxParam = paramTempCalculation(d, daynum, citynm, weatherParam);
+                        var MedXPos = boxParam[4];
+                        return MedXPos;
+                    })
+                    .attr("y2", 150)
+                    .attr("stroke-width", 3)
+                    .attr("stroke", "black");
+
+                var referenceline = marker.append("line")
+                    .attr("x1", 170)
+                    .attr("y1", 220)
+                    .attr("x2", 170)
+                    .attr("y2", 220)
+                    .attr("stroke-width", 0)
+                    .attr("stroke", "white");
+
+
+
+                // labels
+
+                rangerect = marker.append("text")
+                    .attr("x", function (d) {
+                        var boxParam = paramTempCalculation(d, daynum, citynm, weatherParam);
+                        var LeftLabelXPos = boxParam[5];
+                        return LeftLabelXPos - 50;
+                    })
+                    .attr("y", 140)
+                    .attr("font-size", "18px")
+                    //.text("-3" + ' \260' + "F" + '\240' + '\240' + "+3" + ' \260' + "F");
+                    .text(function (d) {
+                        var range = d.value[daynum][citynm].temperature.Range;
+                        var range1txt = range.split("-", 2);
+                        var onlynumber = range1txt[0];
+                        onlynumber = onlynumber.replace(/ F/g, "\260F"); // get the first half of the range string and extract only number
+                        return onlynumber;
+                    });
+
+                grayrect = marker.append("text")
+                    .attr("x", function (d) {
+                        var boxParam = paramTempCalculation(d, daynum, citynm, weatherParam);
+                        var RightLabelXPos = boxParam[6];
+                        return RightLabelXPos + 20;
+                    })
+                    .attr("y", 140)
+                    .attr("font-size", "18px")
+                    //.text("-3" + ' \260' + "F" + '\240' + '\240' + "+3" + ' \260' + "F");
+                    .text(function (d) {
+                        var range = d.value[daynum][citynm].temperature.Range;
+                        var range1txt = range.split("-", 2);
+                        var onlynumber = range1txt[1];
+                        onlynumber = onlynumber.replace(/ F/g, "\260F"); // get the second half of the range string and extract only number
+                        return onlynumber;
+                    });
+
+                medianline = marker.append("text")
+                    .attr("x", function (d) {
+                        var boxParam = paramTempCalculation(d, daynum, citynm, weatherParam);
+                        var MedXPos = boxParam[4];
+                        return MedXPos - 20;
+                    })
+                    .attr("y", 90)
+                    .attr("font-size", "25px")
+                    .attr("stroke-width", 50)
+                    .text(function (d) {
+                        var median = d.value[daynum][citynm].temperature.Median;
+                        var median = median.replace(/ F/g, "\260F");
+                        return median;
+                    });
+
+                referenceline = marker.append("text")
+                    .attr("x", 80)
+                    .attr("y", 230)
+                    .attr("font-size", "19px")
+                    .attr("stroke-width", 50)
+                    .text(function (d) {
+                        var confival = d.value[daynum][citynm].temperature.Confidence;
+                        var finalconfival = confival * 100;
+                        return finalconfival + "% Confident";
+                    });
+            }
+        });
+    </script>
+    <script>
+
+        var citynm = "Atlanta";
+        var avatarname;
+
+        function decideavatar(daynum, xpos) {
+
+            var medianval;
+            var finalmedian;
+            // Reading data from the json
+            d3.json("RealGraphData.json", function (error, data) {
+                if (error)
+                    throw error;
+
+                var d1 = d3.entries(data);
+
+                d1.forEach(function (d) {
+                    medianval = d.value[daynum][citynm].temperature.Median;
+                    finalmedian = medianval.split("F", 1);
+
+                    var confi = d.value[daynum][citynm].temperature.Confidence;
+                    var finalconfi = confi * 100;
+
+                    if ((finalmedian < 30)) {
+                        if (finalconfi >= 70) {
+                            avatarname = "Mix_minus16to6degree";
+                        } else if ((finalconfi < 70) && (finalconfi > 36)) {
+                            avatarname = "Mix_minus16to6degree";
+                        } else if ((finalconfi <= 36) && (finalconfi > 5)) {
+                            avatarname = "Mix_minus16to6degree";
+                        } else if (finalconfi < 5) {
+                            avatarname = "Mix_minus16to6degree";
+                        }
+                    }
+                    else if ((finalmedian >= 30) && (finalmedian < 40)) {
+                        if (finalconfi >= 70) {
+                            avatarname = "0to5degree";
+                        } else if ((finalconfi < 70) && (finalconfi > 36)) {
+                            avatarname = "Mix_minus4to4degree";
+                        } else if ((finalconfi <= 36) && (finalconfi > 5)) {
+                            avatarname = "Mix_minus7to7degree";
+                        } else if (finalconfi < 5) {
+                            avatarname = "Mix_minus11to11degree";
+                        }
+                    }
+                    else if ((finalmedian >= 40) && (finalmedian < 50)) {
+                        if (finalconfi >= 70) {
+                            avatarname = "5to10degree";
+                        } else if ((finalconfi < 70) && (finalconfi > 36)) {
+                            avatarname = "Mix_0to8degree";
+                        } else if ((finalconfi <= 36) && (finalconfi > 5)) {
+                            avatarname = "Mix_minus2to11degree";
+                        } else if (finalconfi < 5) {
+                            avatarname = "Mix_minus6to15degree";
+                        }
+                    }
+                    else if ((finalmedian >= 50) && (finalmedian < 60)) {
+                        if (finalconfi >= 70) {
+                            avatarname = "10to15degree";
+                        } else if ((finalconfi < 70) && (finalconfi > 36)) {
+                            avatarname = "Mix_6to14degree";
+                        } else if ((finalconfi <= 36) && (finalconfi > 5)) {
+                            avatarname = "Mix_3to17degree";
+                        } else if (finalconfi < 5) {
+                            avatarname = "Mix_minus1to21degree";
+                        }
+                    }
+                    else if ((finalmedian >= 60) && (finalmedian < 70)) {
+                        if (finalconfi >= 70) {
+                            avatarname = "15to20degree";
+                        } else if ((finalconfi < 70) && (finalconfi > 36)) {
+                            avatarname = "Mix_11to20degree";
+                        } else if ((finalconfi <= 36) && (finalconfi > 5)) {
+                            avatarname = "Mix_8to22degree";
+                        } else if (finalconfi < 5) {
+                            avatarname = "Mix_5to26degree";
+                        }
+                    }
+                    else if ((finalmedian >= 70) && (finalmedian < 80)) {
+                        if (finalconfi >= 70) {
+                            avatarname = "20to25degree";
+                        } else if ((finalconfi < 70) && (finalconfi > 36)) {
+                            avatarname = "Mix_17to25degree";
+                        } else if ((finalconfi <= 36) && (finalconfi > 5)) {
+                            avatarname = "Mix_14to28degree";
+                        } else if (finalconfi < 5) {
+                            avatarname = "Mix_10to30degree";
+                        }
+                    }
+                    else if ((finalmedian >= 80) && (finalmedian < 86)) {
+                        if (finalconfi >= 70) {
+                            avatarname = "25to30degree";
+                        } else if ((finalconfi < 70) && (finalconfi > 36)) {
+                            avatarname = "Mix_23to30degree";
+                        } else if ((finalconfi <= 36) && (finalconfi > 5)) {
+                            avatarname = "Mix_19to34degree";
+                        } else if (finalconfi < 5) {
+                            avatarname = "Mix_15to35degree";
+                        }
+                    }
+                    else if ((finalmedian >= 86) && (finalmedian < 95)) {
+                        if (finalconfi >= 70) {
+                            avatarname = "30to40degree";
+                        } else if ((finalconfi < 70) && (finalconfi > 36)) {
+                            avatarname = "Mix_26to34degree";
+                        } else if ((finalconfi <= 36) && (finalconfi > 5)) {
+                            avatarname = "Mix_22to37degree";
+                        } else if (finalconfi < 5) {
+                            avatarname = "Mix_19to40degree";
+                        }
+                    }
+                    else if ((finalmedian >= 95) && (finalmedian < 104)) {
+                        if (finalconfi >= 70) {
+                            avatarname = "30to40degree";
+                        } else if ((finalconfi < 70) && (finalconfi > 36)) {
+                            avatarname = "Mix_30to39degree";
+                        } else if ((finalconfi <= 36) && (finalconfi > 5)) {
+                            avatarname = "Mix_28to42degree";
+                        } else if (finalconfi < 5) {
+                            avatarname = "Mix_24to45degree";
+                        }
+                    }
+                    else if ((finalmedian >= 104) && (finalmedian < 113)) {
+                        if (finalconfi >= 70) {
+                            avatarname = "40andAbove";
+                        } else if ((finalconfi < 70) && (finalconfi > 36)) {
+                            avatarname = "Mix_36to44degree";
+                        } else if ((finalconfi <= 36) && (finalconfi > 5)) {
+                            avatarname = "Mix_32to47degree";
+                        } else if (finalconfi < 5) {
+                            avatarname = "Mix_29to51degree";
+                        }
+                    }
+                    else if ((finalmedian >= 113) && (finalmedian < 122)) {
+                        if (finalconfi >= 70) {
+                            avatarname = "40andAbove";
+                        } else if ((finalconfi < 70) && (finalconfi > 36)) {
+                            avatarname = "Mix_41to49degree";
+                        } else if ((finalconfi <= 36) && (finalconfi > 5)) {
+                            avatarname = "Mix_37to52degree";
+                        } else if (finalconfi < 5) {
+                            avatarname = "Mix_34to56degree";
+                        }
+                    }
+                    else if (finalmedian >= 122) {
+                        if (finalconfi >= 70) {
+                            avatarname = "40andAbove";
+                        } else if ((finalconfi < 70) && (finalconfi > 36)) {
+                            avatarname = "40andAbove";
+                        } else if ((finalconfi <= 36) && (finalconfi > 5)) {
+                            avatarname = "40andAbove";
+                        } else if (finalconfi < 5) {
+                            avatarname = "40andAbove";
+                        }
+                    }
+
+                    var svg = d3.select("body")
+                        .append("svg")
+                        .attr("width", 200)
+                        .attr("height", 400);
+
+                    var imgs = svg.selectAll("image").data([0]);
+                    imgs.enter()
+                        .append("svg:image")
+                        //.attr("xlink:href", "images/markers/customimg/avatar4.png")
+                        .attr("xlink:href", "images/markers/customimg/" + avatarname + ".png")
+                        .attr("x", xpos)
+                        .attr("y", 90)
+                        .attr("width", 170) //170
+                        .attr("height", 250);  //250
+
+                    console.log(finalmedian);
+                    console.log(avatarname);
+                    console.log(finalconfi);
+
+                });
+
+            });
+
+
+        }
+
+        var allavatars = [60, 260, 460, 660, 860, 1060, 1260]; // x position for 7 avatars.
+        for (var j = 0; j < allavatars.length; j++) {
+            var daynum = "day" + j;
+            decideavatar(daynum, allavatars[j]);
+            // console.log(avatarname);
+            /* var svg = d3.select("body")
+       .append("svg")
+       .attr("width", 200)
+       .attr("height", 230);
+
+        var imgs = svg.selectAll("image").data([0]);
+        imgs.enter()
+       .append("svg:image")
+       //.attr("xlink:href", "images/markers/customimg/avatar4.png")
+        .attr("xlink:href", "images/markers/customimg/"+returnparams[0]+".png")
+       .attr("x", allavatars[j])
+       .attr("y", 90)
+       .attr("width", 170)
+       .attr("height", 250);*/
+        }
+    </script>
+
+</body>

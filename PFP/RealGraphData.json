@@ -1,0 +1,144 @@
+{
+  "alldays": {
+    "day0": {
+      "Atlanta": {
+        "precipitation": {
+          "City": "Atlanta",
+          "Confidence": 1.0,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "0.00 in.",
+          "Range": "0.00 in. - 0.01 in."
+        },
+        "temperature": {
+          "City": "Atlanta",
+          "Confidence": 0.95,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "64 F",
+          "Range": "62 F - 65 F"
+        }
+      }
+    },
+    "day1": {
+      "Atlanta": {
+        "precipitation": {
+          "City": "Atlanta",
+          "Confidence": 1.0,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "0.00 in.",
+          "Range": "0.00 in. - 0.00 in."
+        },
+        "temperature": {
+          "City": "Atlanta",
+          "Confidence": 0.94,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "63 F",
+          "Range": "61 F - 65 F"
+        }
+      }
+    },
+    "day2": {
+      "Atlanta": {
+        "precipitation": {
+          "City": "Atlanta",
+          "Confidence": 0.8,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "0.02 in.",
+          "Range": "0.00 in. - 0.09 in."
+        },
+        "temperature": {
+          "City": "Atlanta",
+          "Confidence": 0.82,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "57 F",
+          "Range": "55 F - 60 F"
+        }
+      }
+    },
+    "day3": {
+      "Atlanta": {
+        "precipitation": {
+          "City": "Atlanta",
+          "Confidence": 0.96,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "0.00 in.",
+          "Range": "0.00 in. - 0.02 in."
+        },
+        "temperature": {
+          "City": "Atlanta",
+          "Confidence": 0.71,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "63 F",
+          "Range": "58 F - 66 F"
+        }
+      }
+    },
+    "day4": {
+      "Atlanta": {
+        "precipitation": {
+          "City": "Atlanta",
+          "Confidence": 0.99,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "0.00 in.",
+          "Range": "0.00 in. - 0.00 in."
+        },
+        "temperature": {
+          "City": "Atlanta",
+          "Confidence": 0.8,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "66 F",
+          "Range": "61 F - 68 F"
+        }
+      }
+    },
+    "day5": {
+      "Atlanta": {
+        "precipitation": {
+          "City": "Atlanta",
+          "Confidence": 1.0,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "0.00 in.",
+          "Range": "0.00 in. - 0.00 in."
+        },
+        "temperature": {
+          "City": "Atlanta",
+          "Confidence": 0.68,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "68 F",
+          "Range": "61 F - 70 F"
+        }
+      }
+    },
+    "day6": {
+      "Atlanta": {
+        "precipitation": {
+          "City": "Atlanta",
+          "Confidence": 1.0,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "0.00 in.",
+          "Range": "0.00 in. - 0.00 in."
+        },
+        "temperature": {
+          "City": "Atlanta",
+          "Confidence": 0.7,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "70 F",
+          "Range": "66 F - 73 F"
+        }
+      }
+    }
+  }
+}
