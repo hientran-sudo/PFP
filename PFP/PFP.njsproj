@@ -33,7 +33,11 @@
   <ItemGroup>
     <Content Include="dist\app-bundle.js" />
     <Content Include="dist\app-bundle.js.map" />
+    <Content Include="graph_both.html" />
+    <Content Include="graph_output.json" />
+    <Content Include="graph_precip.html" />
     <Content Include="graph_style-sheet.css" />
+    <Content Include="graph_temp.html" />
     <Content Include="images\markers\customimg\0andBelow.png" />
     <Content Include="images\markers\customimg\0to5degree.png" />
     <Content Include="images\markers\customimg\10to15degree.png" />

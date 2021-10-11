@@ -12,10 +12,14 @@
 
 </head>
 <body>
+    <p style="padding: 10px;">
+        <input type="button" onclick="location.href = 'graph_temp.html';" id="lbl1" value="Temperature" style="font-size:larger;">
+        <input type="button" onclick="location.href = 'graph_precip.html';" id="lbl2" value="Precipitation" style="font-size:larger;">
+        <input type="button" onclick="location.href = 'graph_both.html';" id="lbl2" value="Both" style="font-size:larger;">
+    </p>
     <script src="//d3js.org/d3.v3.min.js"></script>
     <script>
         // Get cityname form local storage
-        localStorage.setItem("cityname", "Atlanta");
         var citynm = localStorage.getItem("cityname");
         function paramTempCalculation(d, daynum, citynm, weatherParam) {
             var ObarX1, ObarX2, ObarWidth, GbarX1, GbarX2, GbarWidth, MedianX, range, rangetx, lowrange, highrange, p10, p90, medianval;
@@ -85,7 +89,7 @@
 
         // Headline
         var jsonOtherLbl = [
-            { "x_axis": 50, "y_axis": 50, "lbl": citynm + "-7 Day Forecast", "font_size": 48 },
+            { "x_axis": 10, "y_axis": 20, "lbl": citynm + "-7 Day Forecast", "font_size": 48 },
             { "x_axis": 100, "y_axis": 80, "lbl": "Monday", "font_size": 30 },
             { "x_axis": 500, "y_axis": 80, "lbl": "Tuesday", "font_size": 30 },
             { "x_axis": 900, "y_axis": 80, "lbl": "Wednesday", "font_size": 30 },
@@ -97,7 +101,7 @@
 
         var svgContainer = d3.select("body").append("svg")
             .attr("width", 2800)
-            .attr("height", 150)
+            .attr("height", 50)
             .attr("class", "graph");
 
         var otherlbls = svgContainer.selectAll("text")
@@ -421,7 +425,7 @@
                     var svg = d3.select("body")
                         .append("svg")
                         .attr("width", 200)
-                        .attr("height", 400);
+                        .attr("height", 200);
 
                     var imgs = svg.selectAll("image").data([0]);
                     imgs.enter()

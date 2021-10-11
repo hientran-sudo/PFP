@@ -1,0 +1,270 @@
+{
+  "alldays": {
+    "day0": {
+    "Monroe": {
+        "precipitation": {
+          "City": "Monroe",
+          "Confidence": 1.0,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "0.00 in.",
+          "Range": "0.00 in. - 0.01 in."
+        },
+        "temperature": {
+          "City": "Monroe",
+          "Confidence": 0.80,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "61 F",
+          "Range": "58 F - 70 F"
+        }
+      },
+      "Atlanta": {
+        "precipitation": {
+          "City": "Atlanta",
+          "Confidence": 1.0,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "0.00 in.",
+          "Range": "0.00 in. - 0.01 in."
+        },
+        "temperature": {
+          "City": "Atlanta",
+          "Confidence": 0.95,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "64 F",
+          "Range": "62 F - 65 F"
+        }
+      }
+    },
+    "day1": {
+     "Monroe": {
+        "precipitation": {
+          "City": "Monroe",
+          "Confidence": 1.0,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "0.00 in.",
+          "Range": "0.00 in. - 0.01 in."
+        },
+        "temperature": {
+          "City": "Monroe",
+          "Confidence": 0.95,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "64 F",
+          "Range": "62 F - 65 F"
+        }
+      },
+      "Atlanta": {
+        "precipitation": {
+          "City": "Atlanta",
+          "Confidence": 1.0,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "0.00 in.",
+          "Range": "0.00 in. - 0.00 in."
+        },
+        "temperature": {
+          "City": "Atlanta",
+          "Confidence": 0.74,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "63 F",
+          "Range": "61 F - 75 F"
+        }
+      }
+    },
+    "day2": {
+       "Monroe": {
+        "precipitation": {
+          "City": "Monroe",
+          "Confidence": 1.0,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "0.00 in.",
+          "Range": "0.00 in. - 0.01 in."
+        },
+        "temperature": {
+          "City": "Monroe",
+          "Confidence": 0.35,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "54 F",
+          "Range": "45 F - 65 F"
+        }
+      },
+      "Atlanta": {
+        "precipitation": {
+          "City": "Atlanta",
+          "Confidence": 0.8,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "0.02 in.",
+          "Range": "0.00 in. - 0.09 in."
+        },
+        "temperature": {
+          "City": "Atlanta",
+          "Confidence": 0.62,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "67 F",
+          "Range": "55 F - 75 F"
+        }
+      }
+    },
+    "day3": {
+      "Monroe": {
+        "precipitation": {
+          "City": "Monroe",
+          "Confidence": 1.0,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "0.00 in.",
+          "Range": "0.00 in. - 0.01 in."
+        },
+        "temperature": {
+          "City": "Monroe",
+          "Confidence": 0.60,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "64 F",
+          "Range": "57 F - 75 F"
+        }
+      },
+      "Atlanta": {
+        "precipitation": {
+          "City": "Atlanta",
+          "Confidence": 0.96,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "0.00 in.",
+          "Range": "0.00 in. - 0.02 in."
+        },
+        "temperature": {
+          "City": "Atlanta",
+          "Confidence": 0.51,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "63 F",
+          "Range": "58 F - 80 F"
+        }
+      }
+    },
+    "day4": {
+    "Monroe": {
+        "precipitation": {
+          "City": "Monroe",
+          "Confidence": 1.0,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "0.00 in.",
+          "Range": "0.00 in. - 0.01 in."
+        },
+        "temperature": {
+          "City": "Monroe",
+          "Confidence": 0.77,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "64 F",
+          "Range": "60 F - 78 F"
+        }
+      },
+      "Atlanta": {
+        "precipitation": {
+          "City": "Atlanta",
+          "Confidence": 0.99,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "0.00 in.",
+          "Range": "0.00 in. - 0.00 in."
+        },
+        "temperature": {
+          "City": "Atlanta",
+          "Confidence": 0.1,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "66 F",
+          "Range": "61 F - 88 F"
+        }
+      }
+    },
+    "day5": {
+    "Monroe": {
+        "precipitation": {
+          "City": "Monroe",
+          "Confidence": 1.0,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "0.00 in.",
+          "Range": "0.00 in. - 0.01 in."
+        },
+        "temperature": {
+          "City": "Monroe",
+          "Confidence": 1.0,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "64 F",
+          "Range": "62 F - 65 F"
+        }
+      },
+      "Atlanta": {
+        "precipitation": {
+          "City": "Atlanta",
+          "Confidence": 1.0,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "0.00 in.",
+          "Range": "0.00 in. - 0.00 in."
+        },
+        "temperature": {
+          "City": "Atlanta",
+          "Confidence": 0.68,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "68 F",
+          "Range": "61 F - 75 F"
+        }
+      }
+    },
+    "day6": {
+       "Monroe": {
+        "precipitation": {
+          "City": "Monroe",
+          "Confidence": 1.0,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "0.00 in.",
+          "Range": "0.00 in. - 0.01 in."
+        },
+        "temperature": {
+          "City": "Monroe",
+          "Confidence": 0.15,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "55 F",
+          "Range": "40 F - 59 F"
+        }
+      },
+      "Atlanta": {
+        "precipitation": {
+          "City": "Atlanta",
+          "Confidence": 1.0,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "0.00 in.",
+          "Range": "0.00 in. - 0.00 in."
+        },
+        "temperature": {
+          "City": "Atlanta",
+          "Confidence": 0.30,
+          "Latitude": 33.75,
+          "Longitude": -84.39,
+          "Median": "75 F",
+          "Range": "66 F - 79 F"
+        }
+      }
+    }
+  }
+}
