@@ -82,6 +82,11 @@
     <Content Include="index.html">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="map_both.html" />
+    <Content Include="map_output.json" />
+    <Content Include="map_precip.html" />
+    <Content Include="map_style-sheet.css" />
+    <Content Include="map_temp.html" />
     <Content Include="RealGraphData.json">
       <SubType>Code</SubType>
     </Content>

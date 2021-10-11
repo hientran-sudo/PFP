@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<!-- reference: https://bl.ocks.org/mbostock/899711 -->
+<title> </title>
+<head>
+
+	<!--[if lt IE 9]>
+	<script src="/js/html5shiv.js"></script>
+	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+
+	<![endif]-->
+	<style>
+		html, body, #map {
+			height: 90%;
+			width: 100%;
+			margin: auto;
+		}
+
+		.myCheckbox {
+			margin-top: 2em;
+			margin-bottom: 1em;
+		}
+
+		.locations, .locations svg {
+			position: absolute;
+		}
+
+		.locations svg {
+			width: 60px;
+			height: 20px;
+			padding-right: 100px;
+			font: 10px sans-serif;
+		}
+
+		.locations rect {
+			fill: green;
+			stroke: none;
+		}
+		
+		.locations circle {
+			fill: #ffb31a;
+			stroke: none;
+		}
+		
+	</style>
+</head>
+<body>
+	<div style="padding: 10px;">
+		<input type="button" onclick="location.href = 'map_temp.html';" id="lbl1" value="Temperature" style="font-size:larger;">
+		<input type="button" onclick="location.href = 'map_precip.html';" id="lbl2" value="Precipitation" style="font-size:larger;">
+		<input type="button" onclick="location.href = 'map_both.html';" id="lbl2" value="Both" style="font-size:larger;">
+	</div>
+	<div id="map"> </div>
+	<script src="//d3js.org/d3.v3.min.js"></script>
+   <script src="markerclusterer.js"></script>
+
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAY7zlwu_IT08HhMM9W2ySjfUBCHWu-KXc&callback=initMap" async defer></script>
+	<script>
+		// global varibles
+		var map;
+		var layer;
+        var circle_list = [];
+        var rect_list = [];
+       // Initializing Google Map
+		
+		function keyvaluefn() {
+            var keys = [], values = [];
+
+        return {
+        put: function (key, value) {
+            var index = keys.indexOf(key); 
+            if(index == -1) {
+                keys.push(key);
+                values.push(value);
+                
+            }
+            else {
+                values[index] = value;
+            }
+        },
+        get: function (key) {
+            return values[keys.indexOf(key)];
+             }
+            };
+         }
+
+		
+		
+		var fpc = keyvaluefn();
+		var fpr = keyvaluefn();
+		function initMap() {
+
+			map = new google.maps.Map(d3.select("#map").node(), {
+				zoom : 4,
+				center : new google.maps.LatLng(33.75, -84.39)
+
+			});
+			if (navigator.geolocation) {
+	          navigator.geolocation.getCurrentPosition(function(position) {
+	            var pos = {
+	              lat: position.coords.latitude,
+	              lng: position.coords.longitude
+	            };
+	            map.setCenter(pos);
+	            map.setZoom(13);
+	          });
+	        } 
+	        else {
+	          // Browser doesn't support Geolocation
+	          handleLocationError(false, infoWindow, map.getCenter());
+	        }
+			// Reading data from the json
+			
+			d3.json("map_output_try.json", function(error, data) {
+				if (error)
+                throw error;
+
+				var d1 = d3.entries(data);
+
+				d1.forEach(function(d) {
+					
+					var latlong = new google.maps.LatLng(d.value.Latitude, d.value.Longitude);
+					var median = d.value.temperature.Median;
+					var median_prep=d.value.precipitation.Median;
+					var range_precipitation = d.value.precipitation.Range;
+					var range = d.value.temperature.Range;
+					var medianlbl= d.key +" "+" "+ median.replace(/ F/g, "\260F ")+" "+" ";
+					var rangelbl=  range.replace(/F/g,"\260F")+" "+" "+" "+ median_prep;
+				    var lbl = d.value.temperature.Range;
+				    var r = getRadius(d.value.temperature.Confidence);
+					var wdht = getWidthHeight(d.value.precipitation.Confidence);
+
+					var circle = new google.maps.Marker({
+                                      position: latlong,
+                                      label:medianlbl,
+                                      	
+                                      icon: {
+                                          path: google.maps.SymbolPath.CIRCLE,
+                                          scale: r,
+                                          fillColor: "#ffb31a",
+        							      fillOpacity: 1.0,
+       									  strokeWeight: 0,
+       									  labelOrigin: new google.maps.Point(1,1.4)
+       									    }
+       									    
+                                     }); 
+                   
+                   fpc.put(circle,range);       
+				   var rect_latlong = new google.maps.LatLng(d.value.Latitude, d.value.Longitude);		        
+		           var rectangle = new google.maps.Marker({
+                                      position: rect_latlong,
+                                    label:rangelbl,
+                                    
+                                     
+                                      icon: {
+                                          path: 'M '+wdht+'-25 H 45 V 25 H'+ wdht+' Z ',
+                                         // scale: wdht,
+                                          fillColor: "GREEN",
+        							      fillOpacity: 1.0,
+       									  strokeWeight: 0,
+       									  map:map,
+       									  labelOrigin: new google.maps.Point(30,1)
+       									   }
+                                     }); 
+                        fpr.put(rectangle,range_precipitation);
+                         circle.addListener('click', function() {
+                       	 var cityname=d.key;
+                       	 if(cityname!=null)
+                       	 {
+                       	 	localStorage.setItem("cityname", cityname);
+                       	 	
+	        	           window.open("graph_temp.html");  // Change this to graph_temp.html when you commit the code to git
+                       	 }
+                       	  
+                      });
+                                     
+                                                    	circle_list.push( circle); 
+                                                    	rect_list.push(rectangle);
+                 	
+                                 
+				});
+				
+										
+			var circleCluster = new MarkerClusterer(map, circle_list,
+				
+           {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+			
+			var rectCluster = new MarkerClusterer(map, rect_list,
+				
+           {imagePath: 'm'});
+
+
+
+circleCluster.setCalculator(function (circle, numStyles) {
+	
+  var index = 1;
+  var count = circle.length.toString();
+ 
+  var dv = count;
+  while (dv !== 0) {
+    dv = parseInt(dv / 25, 10);
+    index++;
+  }
+  
+ 
+  var median;
+  var tot = 0;
+  var temp_min;
+  var temp_max;
+  for (i=0; i < circle.length;i++){
+  		median = fpc.get(circle[i]);
+  	
+    tmin = median.split(" ")[0];
+    tmax = median.split(" ")[3];
+    
+    if(i == 0){
+    	temp_min = tmin;
+    	temp_max = tmax;
+    }else{
+       if(tmin < temp_min){
+       	temp_min = tmin;
+       }
+       if(tmax > temp_max){
+       	temp_max = tmax;
+       }	
+    }
+ }
+ 
+  var cluster_label = temp_min +"\260F"+"-"+temp_max+"\260F";
+  
+  return {
+    text:cluster_label,
+    index: 2,
+  };
+})
+
+rectCluster.setCalculator(function (markers, numStyles) {
+	  var index = 0;
+  var count = markers.length;
+  var dv = count;
+  while (dv !== 0) {
+    dv = parseInt(dv / 10, 10);
+    index++;
+  }
+
+  index = Math.min(index, numStyles);
+   
+ 
+  for (var i = 0; cluster = rectCluster.clusters_[i]; i++) {
+              cluster.clusterIcon_.setpos(function(ci,latlng){
+        var pos = ci.getProjection().fromLatLngToDivPixel(latlng);
+        pos.x -= parseInt(ci.width_ / 2, 10);
+        pos.y -= parseInt(ci.height_ / 2, 10);
+        pos.x+=40;
+        return pos;
+      }); 
+   }
+  var median_prep;
+  var t = 0;
+  var prep_min;
+  var prep_max;
+  for (i=0; i < markers.length;i++){
+ 
+  	median_prep = fpr.get(markers[i]);
+  	console.log(fpr.get(markers[i]));
+   
+    pmin = median_prep.split(" ")[0];
+    pmax = median_prep.split(" ")[3];
+   
+    if(i == 0){
+    	prep_min = pmin;
+    	prep_max = pmax;
+    }else{
+       if(pmin < prep_min){
+       	prep_min = pmin;
+       }
+       if(pmax > prep_max){
+       	prep_max = pmax;
+       }	
+    }
+ }
+ var rectcluster_label = prep_min +"in"+"-"+prep_max + "in";
+ 
+  console.log(rectcluster_label);
+  return {
+    text:rectcluster_label,
+    index: 3
+  };
+})
+
+
+
+				
+							
+				 function getRadius(confi) {
+                    var rad = (confi * 100) / 3;
+                    return rad - 2;
+                }
+                
+                 function getWidthHeight(confi) {
+                 
+                    var wdh = (confi * 100);
+                    return wdh;
+                }
+
+
+			});
+			
+		}
+
+
+		 var jsonCircles = [
+            { "x_axis": 1170, "y_axis": 50, "radius": 33 },
+            { "x_axis": 1240, "y_axis": 50, "radius": 25 },
+            { "x_axis": 1290, "y_axis": 50, "radius": 17 },
+            { "x_axis": 1320, "y_axis": 50, "radius": 9 }];
+
+        var jsonRects = [
+            { "x_axis": 903, "y_axis": 30, "width": 50, "height": 50 },
+            { "x_axis": 963, "y_axis": 37, "width": 37, "height": 37 },
+            { "x_axis": 1009, "y_axis": 44, "width": 25, "height": 25 },
+            { "x_axis": 1042, "y_axis": 51, "width": 12, "height": 12 }];
+        var jsonlegendLbl = [
+            { "x_axis": 900, "y_axis": 20, "lbl": "100%" },
+            { "x_axis": 1040, "y_axis": 20, "lbl": "25%" },
+            { "x_axis": 1150, "y_axis": 14, "lbl": "100%" },
+            { "x_axis": 1315, "y_axis": 16, "lbl": "25%" },
+            { "x_axis": 900, "y_axis": 97, "lbl": "Precipitation Confidence" },
+            { "x_axis": 1155, "y_axis": 97, "lbl": "Temperature Confidence" }];  
+            
+            
+            var svgContainer = d3.select("body").append("svg")
+            .attr("height", 100)
+            .attr("width", 1400)
+            .attr("class", "locations");
+            
+            var circles = svgContainer.selectAll("circle")
+            .data(jsonCircles)
+            .enter()
+            .append("circle");
+
+        var circleAttributes = circles
+            .attr("cx", function (d) { return d.x_axis; })
+            .attr("cy", function (d) { return d.y_axis; })
+            .attr("r", function (d) { return d.radius; });    
+           
+           
+        // add rects
+        var rects = svgContainer.selectAll("rect")
+            .data(jsonRects)
+            .enter()
+            .append("rect");
+
+        var rectAttributes = rects
+            .attr("x", function (d) { return d.x_axis; })
+            .attr("y", function (d) { return d.y_axis; })
+            .attr("width", function (d) { return d.width; })
+            .attr("height", function (d) { return d.height; });
+
+        //add text
+        var legendlbls = svgContainer.selectAll("text")
+            .data(jsonlegendLbl)
+            .enter()
+            .append("text");
+
+        var textAttributes = legendlbls
+            .attr("x", function (d) { return d.x_axis; })
+            .attr("y", function (d) { return d.y_axis; })
+            .attr("font-size", "10px")
+            .text(function (d) { return d.lbl; });
+
+	</script>
+</body>
+</html>

@@ -1,0 +1,169 @@
+﻿<!DOCTYPE html>
+<!-- reference: https://bl.ocks.org/mbostock/899711 -->
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <link rel="shortcut icon" href="about:blank" />
+    <link rel="stylesheet" href="map_style-sheet.css" />
+</head>
+
+<body>
+    <div style="padding: 10px;">
+        <input type="button" onclick="location.href = 'map_temp.html';" id="lbl1" value="Temperature" style="font-size:larger;">
+        <input type="button" onclick="location.href = 'map_precip.html';" id="lbl2" value="Precipitation" style="font-size:larger;">
+        <input type="button" onclick="location.href = 'map_both.html';" id="lbl2" value="Both" style="font-size:larger;">
+    </div>
+
+    <div id="map"></div>
+    <script src="//d3js.org/d3.v3.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAY7zlwu_IT08HhMM9W2ySjfUBCHWu-KXc&callback=initMap" async defer></script>
+
+    <script>
+
+        // global varibles
+        var map;
+        var layer;
+
+        // Initializing Google Map
+        function initMap() {
+            map = new google.maps.Map(d3.select("#map").node(), {
+                zoom: 10,
+                center: new google.maps.LatLng(33.75, -84.39)
+            });
+        }
+
+        // Reading data from the json
+        d3.json("map_output.json", function (error, data) {
+            if (error) throw error;
+
+            // creating the Google OverlayView
+            var overlay = new google.maps.OverlayView();
+
+            // Add the container when the overlay is added to the map.
+            overlay.onAdd = function () {
+                layer = d3.select(this.getPanes().overlayLayer).append("div").attr("class", "locations");
+            };
+
+            // drwing markers. Each marker is a svg element
+            overlay.draw = function () {
+                var projection = this.getProjection(),
+                    padding = 10;
+
+                var marker = layer.selectAll("svg")
+                    .data(d3.entries(data))
+                    .each(transform) // update existing markers using transfomr function
+                    .enter()
+                    .append("svg")
+                    .each(transform)
+                    .attr("class", "marker");
+
+                // Add a rect.
+                marker.append("rect")
+                    .attr("x", padding - 20)
+                    .attr("y", padding - 18)
+                    .attr("width", getWidthHeight)
+                    .attr("height", getWidthHeight);
+
+                // Add a label..City Name
+                marker.append("text")
+                    .attr("x", padding - 17)
+                    .attr("y", padding - 25)
+                    .attr("dy", ".31em")
+                    .attr("font-size", "17px")
+                    .text(function (d) { return d.value.precipitation.City; });
+
+                // Add a label ..the median value
+                marker.append("text")
+                    .attr("x", padding - 17)
+                    .attr("y", function (d) {     // using this function here, makes the text responsive to the height of the respective marker.
+                        var confi = d.value.precipitation.Confidence;
+                        var wdht = (confi * 100) / 3;
+                        var pad = wdht - 20;
+                        return pad;
+                    })
+                    .attr("dy", ".31em")
+                    .attr("font-size", "17px")
+                    .text(function (d) { return d.value.precipitation.Median; });
+
+                // Add a label..the Range
+                marker.append("text")
+                    .attr("x", padding - 35)
+                    .attr("y", function (d) {     // using this function here, makes the text responsive to the height of the respective marker.
+                        var confi = d.value.precipitation.Confidence;
+                        var wdht = (confi * 100) / 3;
+                        var pad = wdht + 18;
+                        return pad;
+                    })
+                    .attr("dy", ".31em")
+                    .attr("font-size", "17px")
+                    .text(function (d) { return d.value.precipitation.Range; });
+
+                function getRadius(d) {
+
+                    var confi = d.value.precipitation.Confidence; //get the confince value which is in string format
+                    // the manipulate the confidence value to get the radius of circle and return radius
+                    var rad = (confi * 100) / 3;
+                    return rad;
+                }
+
+                function getWidthHeight(d) {
+
+                    var confi = d.value.precipitation.Confidence; //get the confince value which is in string format
+                    var wdht = (confi * 100) / 2;
+                    return wdht;
+                }
+
+                function transform(d) {
+                    d = new google.maps.LatLng(d.value.precipitation.Latitude, d.value.precipitation.Longitude);
+                    d = projection.fromLatLngToDivPixel(d);
+                    return d3.select(this)
+                        .style("left", (d.x - padding) + "px")
+                        .style("top", (d.y - padding) + "px");
+                }
+            };
+
+            // Bind overlay with the map
+            overlay.setMap(map);
+        });
+
+        /* ------Drawing Legend-----*/
+        var jsonRects = [
+            { "x_axis": 1170, "y_axis": 30, "width": 50, "height": 50 },
+            { "x_axis": 1230, "y_axis": 37, "width": 37, "height": 37 },
+            { "x_axis": 1275, "y_axis": 44, "width": 25, "height": 25 },
+            { "x_axis": 1306, "y_axis": 51, "width": 12, "height": 12 }];
+
+        var jsonlegendLbl = [{ "x_axis": 1170, "y_axis": 20, "lbl": "100%" },
+        { "x_axis": 1300, "y_axis": 20, "lbl": "25%" },
+        { "x_axis": 1170, "y_axis": 97, "lbl": "Confidence Percentage" }];
+
+        var svgContainer = d3.select("body").append("svg")
+            .attr("height", 1)
+            .attr("class", "locations");
+
+        // add rects
+        var rects = svgContainer.selectAll("rect")
+            .data(jsonRects)
+            .enter()
+            .append("rect");
+
+        var rectAttributes = rects
+            .attr("x", function (d) { return d.x_axis; })
+            .attr("y", function (d) { return d.y_axis; })
+            .attr("width", function (d) { return d.width; })
+            .attr("height", function (d) { return d.height; });
+
+        //add text
+        var legendlbls = svgContainer.selectAll("text")
+            .data(jsonlegendLbl)
+            .enter()
+            .append("text");
+        var textAttributes = legendlbls
+            .attr("x", function (d) { return d.x_axis; })
+            .attr("y", function (d) { return d.y_axis; })
+            .attr("font-size", "17px")
+            .text(function (d) { return d.lbl; });
+    </script>
+
+</body>

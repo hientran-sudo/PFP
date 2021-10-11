@@ -1,0 +1,422 @@
+{
+  "Athens": {
+  
+      "zoom":9,
+     "Latitude": 33.95, 
+      "Longitude": -83.36,
+       
+    "precipitation": {
+      "Confidence": 1.0, 
+      
+      "Median": "0.00 in.", 
+      "Range": "0.00 in. - 0.00 in."
+      }, 
+    "temperature": {
+        "Confidence": 1.0, 
+      
+      "Median": "55 F", 
+      "Range": "53 F - 57 F"
+       }
+   
+     
+  }, 
+  "Atlanta": {
+ 
+     "zoom":9,
+     "Latitude": 33.75, 
+      "Longitude": -84.39, 
+   
+    "precipitation": {
+      "Confidence": 1.0, 
+         "Median": "0.00 in.", 
+      "Range": "0.00 in. - 0.00 in."
+      }, 
+    "temperature": {
+       "Confidence": 0.99, 
+      "Median": "55 F", 
+      "Range": "53 F - 57 F"
+      }
+ 
+  }, 
+  
+  "Augusta": {
+    
+      "zoom":6,
+  "Latitude": 33.47, 
+      "Longitude": -82.01, 
+    
+    "precipitation": {
+      "Confidence": 1.0, 
+        "Median": "0.00 in.", 
+      "Range": "0.00 in. - 0.00 in."
+       }, 
+    "temperature": {
+      "Confidence": 0.71, 
+      "Median": "60 F", 
+      "Range": "56 F - 62 F"
+     
+    }
+   
+    
+  }, 
+  "Bainbridge": {
+ 
+       "zoom":7,
+       "Latitude": 30.9, 
+      "Longitude": -84.58, 
+     
+ 
+    "precipitation": {
+       "Confidence": 1.0, 
+       "Median": "0.00 in.", 
+      "Range": "0.00 in. - 0.00 in."
+     }, 
+    "temperature": {
+      "Confidence": 0.69, 
+      "Median": "60 F", 
+      "Range": "52 F - 61 F"
+       }
+   
+  }, 
+  "Blakely": {
+  
+  "zoom":8,
+  "Latitude": 31.38, 
+      "Longitude": -84.93, 
+      
+ 
+  
+    "precipitation": {
+      "Confidence": 1.0, 
+      "Median": "0.00 in.", 
+      "Range": "0.00 in. - 0.00 in."
+      }, 
+    "temperature": {
+      "Confidence": 0.71, 
+      "Median": "60 F", 
+      "Range": "53 F - 61 F"
+       }
+      
+  }, 
+  "Colombus": {
+  
+     "zoom":8,
+     "Latitude": 32.46, 
+      "Longitude": -84.99, 
+      
+  
+    "precipitation": {
+      "Confidence": 1.0, 
+      "Median": "0.00 in.", 
+      "Range": "0.00 in. - 0.00 in."
+       }, 
+    "temperature": {
+      "Confidence": 0.69, 
+      "Median": "59 F", 
+      "Range": "52 F - 61 F"
+       }
+       
+ 
+  }, 
+  "Cordele": {
+  
+  "zoom":10,
+  "Latitude": 31.96, 
+      "Longitude": -83.78, 
+      
+  
+    "precipitation": {
+      "Confidence": 1.0, 
+      "Median": "0.00 in.", 
+      "Range": "0.00 in. - 0.00 in."
+       }, 
+    "temperature": {
+       "Confidence": 0.71, 
+      "Median": "63 F", 
+      "Range": "57 F - 64 F"
+       }
+      
+ 
+  }, 
+  "Dalton": {
+  
+ "zoom":10,
+ "Latitude": 34.77, 
+      "Longitude": -84.97, 
+      
+ 
+    "precipitation": {
+      "Confidence": 1.0, 
+      "Median": "0.00 in.", 
+      "Range": "0.00 in. - 0.00 in."
+       }, 
+    "temperature": {
+       "Confidence": 0.98, 
+      "Median": "53 F", 
+      "Range": "51 F - 55 F"
+       }
+        
+ 
+  }, 
+ 
+  "Dawson": {
+ 
+ "zoom":9,
+ "Latitude": 31.77, 
+      "Longitude": -84.45, 
+      
+ 
+    "precipitation": {
+       "Confidence": 1.0, 
+       "Median": "0.00 in.", 
+      "Range": "0.00 in. - 0.00 in."
+       }, 
+    "temperature": {
+       "Confidence": 0.71, 
+      "Median": "59 F", 
+      "Range": "52 F - 60 F"
+       }
+       
+  }, 
+  "Jesup": {
+  
+  "zoom":9,
+  "Latitude": 31.61, 
+      "Longitude": -81.88, 
+     
+  
+    "precipitation": {
+      "Confidence": 1.0, 
+       "Median": "0.00 in.", 
+      "Range": "0.00 in. - 0.00 in."
+       }, 
+    "temperature": {
+      "Confidence": 0.7, 
+      "Median": "61 F", 
+      "Range": "54 F - 63 F"
+       }    
+ 
+  }, 
+  "La_Grange": {
+  
+  "zoom":9,
+   "Latitude": 33.04, 
+      "Longitude": -85.03, 
+     
+  
+    "precipitation": {
+      "Confidence": 1.0, 
+      "Median": "0.00 in.", 
+      "Range": "0.00 in. - 0.00 in."
+       }, 
+    "temperature": {
+       "Confidence": 0.71, 
+       "Median": "57 F", 
+      "Range": "52 F - 58 F"
+       }
+        
+ 
+  }, 
+  "Macon": {
+  
+  "zoom":8,
+  "Latitude": 32.84, 
+      "Longitude": -83.63, 
+      
+  
+    "precipitation": {
+      "Confidence": 1.0, 
+      "Median": "0.00 in.", 
+      "Range": "0.00 in. - 0.00 in."
+       }, 
+    
+    "temperature": {
+      "Confidence": 0.71, 
+      "Median": "59 F", 
+      "Range": "53 F - 60 F"
+       }
+  }, 
+  "Monroe": {
+ 
+  "zoom":10,
+   "Latitude": 33.79, 
+      "Longitude": -83.71, 
+     
+  
+     "precipitation": {
+      "Confidence": 1.0, 
+      "Median": "0.00 in.", 
+      "Range": "0.00 in. - 0.00 in."
+      }, 
+    "temperature": {
+      "Confidence": 0.99, 
+      "Median": "56 F", 
+      "Range": "54 F - 57 F"
+       }
+
+  }, 
+  "Peachtree_City": {
+  
+  "zoom":11,
+  "Latitude": 33.4, 
+      "Longitude": -84.6, 
+      
+  
+    "precipitation": {
+      "Confidence": 1.0, 
+      "Median": "0.00 in.", 
+      "Range": "0.00 in. - 0.00 in."
+       }, 
+    "temperature": {
+       "Confidence": 0.96, 
+      "Median": "56 F", 
+      "Range": "53 F - 57 F"
+       }
+  }, 
+  "Perry": {
+  
+  "zoom":9,
+  "Latitude": 32.49, 
+      "Longitude": -83.73, 
+      
+  
+    "precipitation": {
+      "Confidence": 1.0, 
+      "Median": "0.00 in.", 
+      "Range": "0.00 in. - 0.00 in."
+       }, 
+    "temperature": {
+      "Confidence": 0.7, 
+      "Median": "59 F", 
+      "Range": "53 F - 60 F"
+       }
+  }, 
+  "Rome": {
+  
+  "zoom":8,
+  "Latitude": 34.26, 
+      "Longitude": -85.16, 
+      
+ 
+    "precipitation": {
+      "Confidence": 1.0, 
+      "Median": "0.00 in.", 
+      "Range": "0.00 in. - 0.00 in."
+       }, 
+    "temperature": {
+      "Confidence": 0.96, 
+      "Median": "54 F", 
+      "Range": "51 F - 56 F"
+      }
+  }, 
+  "Savannah": {
+  
+  "zoom":9,
+   "Latitude": 32.08, 
+      "Longitude": -81.1, 
+     
+  
+    "precipitation": {
+      "Confidence": 1.0, 
+      "Median": "0.00 in.", 
+      "Range": "0.00 in. - 0.00 in."
+       }, 
+    "temperature": {
+      "Confidence": 0.68, 
+      "Median": "62 F", 
+      "Range": "56 F - 64 F"
+       }
+  }, 
+  "Sylvania": {
+  
+  "zoom":9,
+  "Latitude": 32.75, 
+      "Longitude": -81.64, 
+      
+  
+    "precipitation": {
+      "Confidence": 1.0, 
+      "Median": "0.00 in.", 
+      "Range": "0.00 in. - 0.00 in."
+      }, 
+    "temperature": {
+      "Confidence": 0.68, 
+      "Median": "60 F", 
+      "Range": "54 F - 61 F"
+       } 
+  }, 
+  "Tifton": {
+  
+  "zoom":9,
+  "Latitude": 31.45, 
+      "Longitude": -83.51, 
+      
+  
+    "precipitation": {
+      "Confidence": 1.0, 
+      "Median": "0.00 in.", 
+      "Range": "0.00 in. - 0.00 in."
+      }, 
+    "temperature": {
+      "Confidence": 0.7, 
+      "Median": "60 F", 
+      "Range": "54 F - 61 F"
+       } 
+  }, 
+  "Toccoa": {
+  
+  "zoom":10,
+  "Latitude": 34.58, 
+      "Longitude": -83.33, 
+      
+  
+    "precipitation": {
+      "Confidence": 1.0, 
+      "Median": "0.00 in.", 
+      "Range": "0.00 in. - 0.00 in."
+       }, 
+    "temperature": {
+      "Confidence": 1.0, 
+      "Median": "57 F", 
+      "Range": "56 F - 58 F"
+       }
+  }, 
+  "Valdosta": {
+  
+  "zoom":7,
+  "Latitude": 30.83, 
+      "Longitude": -83.28, 
+      
+  
+    "precipitation": {
+      "Confidence": 1.0, 
+      "Median": "0.00 in.", 
+      "Range": "0.00 in. - 0.00 in."
+       }, 
+    "temperature": {
+      "Confidence": 0.65, 
+      "Median": "58 F", 
+      "Range": "52 F - 61 F"
+       }
+
+  
+  }, 
+  "Vidalia": {
+  
+  "zoom":7,
+  "Latitude": 32.22, 
+      "Longitude": -82.41, 
+      
+ 
+    "precipitation": {
+      "Confidence": 1.0, 
+      "Median": "0.00 in.", 
+      "Range": "0.00 in. - 0.00 in."
+      }, 
+    "temperature": {
+      "Confidence": 0.7, 
+      "Median": "60 F", 
+      "Range": "55 F - 62 F"
+       }
+  }
+}

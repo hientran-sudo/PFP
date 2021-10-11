@@ -1,0 +1,31 @@
+﻿html, body, #map {
+    height: 90%;
+    width: 100%;
+    margin: auto;
+}
+
+.myCheckbox {
+    margin-top: 2em;
+    margin-bottom: 1em;
+}
+
+.locations, .locations svg {
+    position: absolute;
+}
+
+    .locations svg {
+        width: 60px;
+        height: 20px;
+        padding-right: 100px;
+        font: 10px sans-serif;
+    }
+
+    .locations rect {
+        fill: green;
+        stroke: none;
+    }
+
+    .locations circle {
+        fill: #ffb31a;
+        stroke: none;
+    }
