@@ -82,6 +82,7 @@
     <Content Include="index.html">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="m3.png" />
     <Content Include="map_both.html" />
     <Content Include="map_output.json" />
     <Content Include="map_precip.html" />
@@ -93,9 +94,13 @@
     <Content Include="server.js" />
     <Content Include="package.json" />
     <Content Include="README.md" />
+    <Content Include="test.html">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="tsconfig.json">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="weather_back-GA.py" />
     <Content Include="webpack-config.js">
       <SubType>Code</SubType>
     </Content>
