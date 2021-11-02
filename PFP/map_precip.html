@@ -1,13 +1,47 @@
 ﻿<!DOCTYPE html>
 <!-- reference: https://bl.ocks.org/mbostock/899711 -->
-
+<title> </title>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-    <link rel="shortcut icon" href="about:blank" />
-    <link rel="stylesheet" href="map_style-sheet.css" />
-</head>
 
+    <!--[if lt IE 9]>
+    <script src="/js/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+
+    <![endif]-->
+    <style>
+        html, body, #map {
+            height: 90%;
+            width: 100%;
+            margin: auto;
+        }
+
+        .myCheckbox {
+            margin-top: 2em;
+            margin-bottom: 1em;
+        }
+
+        .locations, .locations svg {
+            position: absolute;
+        }
+
+            .locations svg {
+                width: 60px;
+                height: 20px;
+                padding-right: 100px;
+                font: 10px sans-serif;
+            }
+
+            .locations rect {
+                fill: green;
+                stroke: none;
+            }
+
+            .locations circle {
+                fill: #ffb31a;
+                stroke: none;
+            }
+    </style>
+</head>
 <body>
     <div style="padding: 10px;">
         <input type="button" onclick="location.href = 'map_temp.html';" id="lbl1" value="Temperature" style="font-size:larger;">
@@ -15,131 +49,214 @@
         <input type="button" onclick="location.href = 'map_both.html';" id="lbl2" value="Both" style="font-size:larger;">
     </div>
 
-    <div id="map"></div>
+    <div id="map"> </div>
     <script src="//d3js.org/d3.v3.min.js"></script>
+    <script src="markerclusterer.js"></script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAY7zlwu_IT08HhMM9W2ySjfUBCHWu-KXc&callback=initMap" async defer></script>
-
     <script>
-
         // global varibles
         var map;
         var layer;
-
+        var circle_list = [];
+        var rect_list = [];
         // Initializing Google Map
-        function initMap() {
-            map = new google.maps.Map(d3.select("#map").node(), {
-                zoom: 10,
-                center: new google.maps.LatLng(33.75, -84.39)
-            });
+
+        function keyvaluefn() {
+            var keys = [], values = [];
+
+            return {
+                put: function (key, value) {
+                    var index = keys.indexOf(key);
+                    if (index == -1) {
+                        keys.push(key);
+                        values.push(value);
+
+                    }
+                    else {
+                        values[index] = value;
+                    }
+                },
+                get: function (key) {
+                    return values[keys.indexOf(key)];
+                }
+            };
         }
 
-        // Reading data from the json
-        d3.json("map_output.json", function (error, data) {
-            if (error) throw error;
 
-            // creating the Google OverlayView
-            var overlay = new google.maps.OverlayView();
 
-            // Add the container when the overlay is added to the map.
-            overlay.onAdd = function () {
-                layer = d3.select(this.getPanes().overlayLayer).append("div").attr("class", "locations");
-            };
+        var fpc = keyvaluefn();
+        var fpr = keyvaluefn();
+        function initMap() {
 
-            // drwing markers. Each marker is a svg element
-            overlay.draw = function () {
-                var projection = this.getProjection(),
-                    padding = 10;
+            map = new google.maps.Map(d3.select("#map").node(), {
+                zoom: 4,
+                center: new google.maps.LatLng(33.75, -84.39)
 
-                var marker = layer.selectAll("svg")
-                    .data(d3.entries(data))
-                    .each(transform) // update existing markers using transfomr function
-                    .enter()
-                    .append("svg")
-                    .each(transform)
-                    .attr("class", "marker");
+            });
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    var pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    map.setCenter(pos);
+                    map.setZoom(13);
+                });
+            }
+            else {
+                // Browser doesn't support Geolocation
+                handleLocationError(false, infoWindow, map.getCenter());
+            }
+            // Reading data from the json
 
-                // Add a rect.
-                marker.append("rect")
-                    .attr("x", padding - 20)
-                    .attr("y", padding - 18)
-                    .attr("width", getWidthHeight)
-                    .attr("height", getWidthHeight);
+            d3.json("map_output.json", function (error, data) {
+                if (error)
+                    throw error;
 
-                // Add a label..City Name
-                marker.append("text")
-                    .attr("x", padding - 17)
-                    .attr("y", padding - 25)
-                    .attr("dy", ".31em")
-                    .attr("font-size", "17px")
-                    .text(function (d) { return d.value.precipitation.City; });
+                var d1 = d3.entries(data);
 
-                // Add a label ..the median value
-                marker.append("text")
-                    .attr("x", padding - 17)
-                    .attr("y", function (d) {     // using this function here, makes the text responsive to the height of the respective marker.
-                        var confi = d.value.precipitation.Confidence;
-                        var wdht = (confi * 100) / 3;
-                        var pad = wdht - 20;
-                        return pad;
-                    })
-                    .attr("dy", ".31em")
-                    .attr("font-size", "17px")
-                    .text(function (d) { return d.value.precipitation.Median; });
+                d1.forEach(function (d) {
 
-                // Add a label..the Range
-                marker.append("text")
-                    .attr("x", padding - 35)
-                    .attr("y", function (d) {     // using this function here, makes the text responsive to the height of the respective marker.
-                        var confi = d.value.precipitation.Confidence;
-                        var wdht = (confi * 100) / 3;
-                        var pad = wdht + 18;
-                        return pad;
-                    })
-                    .attr("dy", ".31em")
-                    .attr("font-size", "17px")
-                    .text(function (d) { return d.value.precipitation.Range; });
+                    var latlong = new google.maps.LatLng(d.value.Latitude, d.value.Longitude);
+                    var median = d.value.temperature.Median;
+                    var median_prep = d.value.precipitation.Median;
+                    var range_precipitation = d.value.precipitation.Range;
+                    var range = d.value.temperature.Range;
+                    var medianlbl = d.key + " " + " " + median.replace(/ F/g, "\260F ") + " " + " ";
+                    var rangelbl = range.replace(/F/g, "\260F") + " " + " " + " " + median_prep;
+                    var lbl = d.value.temperature.Range;
+                    var r = getRadius(d.value.temperature.Confidence);
+                    var wdht = getWidthHeight(d.value.precipitation.Confidence);
 
-                function getRadius(d) {
+                    var circle = new google.maps.Marker({
+                        position: latlong,
+                        //label: medianlbl,
 
-                    var confi = d.value.precipitation.Confidence; //get the confince value which is in string format
-                    // the manipulate the confidence value to get the radius of circle and return radius
+                    });
+
+                    var rect_latlong = new google.maps.LatLng(d.value.Latitude, d.value.Longitude);
+                    var rectangle = new google.maps.Marker({
+                        position: rect_latlong,
+                        label: rangelbl,
+
+
+                        icon: {
+                            path: 'M ' + wdht + '-25 H 45 V 25 H' + wdht + ' Z ',
+                            // scale: wdht,
+                            fillColor: "GREEN",
+                            fillOpacity: 1.0,
+                            strokeWeight: 0,
+                            map: map,
+                            labelOrigin: new google.maps.Point(30, 1)
+                        }
+                    });
+                    fpr.put(rectangle, range_precipitation);
+                    rectangle.addListener('click', function () {
+                        var cityname = d.key;
+                        if (cityname != null) {
+                            localStorage.setItem("cityname", cityname);
+
+                            window.open("graph_precip.html");  // Change this to graph_temp.html when you commit the code to git
+                        }
+
+                    });
+                    rect_list.push(rectangle);
+
+                });
+
+                var circleCluster = new MarkerClusterer(map, circle_list,
+
+                    { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+
+                var rectCluster = new MarkerClusterer(map, rect_list,
+
+                    { imagePath: 'm' });
+
+                rectCluster.setCalculator(function (markers, numStyles) {
+                    var index = 0;
+                    var count = markers.length;
+                    var dv = count;
+                    while (dv !== 0) {
+                        dv = parseInt(dv / 10, 10);
+                        index++;
+                    }
+
+                    index = Math.min(index, numStyles);
+
+
+                    for (var i = 0; cluster = rectCluster.clusters_[i]; i++) {
+                        cluster.clusterIcon_.setpos(function (ci, latlng) {
+                            var pos = ci.getProjection().fromLatLngToDivPixel(latlng);
+                            pos.x -= parseInt(ci.width_ / 2, 10);
+                            pos.y -= parseInt(ci.height_ / 2, 10);
+                            pos.x += 40;
+                            return pos;
+                        });
+                    }
+                    var median_prep;
+                    var t = 0;
+                    var prep_min;
+                    var prep_max;
+                    for (i = 0; i < markers.length; i++) {
+
+                        median_prep = fpr.get(markers[i]);
+                        console.log(fpr.get(markers[i]));
+
+                        pmin = median_prep.split(" ")[0];
+                        pmax = median_prep.split(" ")[3];
+
+                        if (i == 0) {
+                            prep_min = pmin;
+                            prep_max = pmax;
+                        } else {
+                            if (pmin < prep_min) {
+                                prep_min = pmin;
+                            }
+                            if (pmax > prep_max) {
+                                prep_max = pmax;
+                            }
+                        }
+                    }
+                    var rectcluster_label = prep_min + "in" + "-" + prep_max + "in";
+
+                    console.log(rectcluster_label);
+                    return {
+                        text: rectcluster_label,
+                        index: 3
+                    };
+                })
+                function getRadius(confi) {
                     var rad = (confi * 100) / 3;
-                    return rad;
+                    return rad - 2;
                 }
 
-                function getWidthHeight(d) {
+                function getWidthHeight(confi) {
 
-                    var confi = d.value.precipitation.Confidence; //get the confince value which is in string format
-                    var wdht = (confi * 100) / 2;
-                    return wdht;
+                    var wdh = (confi * 100);
+                    return wdh;
                 }
 
-                function transform(d) {
-                    d = new google.maps.LatLng(d.value.precipitation.Latitude, d.value.precipitation.Longitude);
-                    d = projection.fromLatLngToDivPixel(d);
-                    return d3.select(this)
-                        .style("left", (d.x - padding) + "px")
-                        .style("top", (d.y - padding) + "px");
-                }
-            };
 
-            // Bind overlay with the map
-            overlay.setMap(map);
-        });
+            });
 
-        /* ------Drawing Legend-----*/
+        }    
+
         var jsonRects = [
-            { "x_axis": 1170, "y_axis": 30, "width": 50, "height": 50 },
-            { "x_axis": 1230, "y_axis": 37, "width": 37, "height": 37 },
-            { "x_axis": 1275, "y_axis": 44, "width": 25, "height": 25 },
-            { "x_axis": 1306, "y_axis": 51, "width": 12, "height": 12 }];
-
-        var jsonlegendLbl = [{ "x_axis": 1170, "y_axis": 20, "lbl": "100%" },
-        { "x_axis": 1300, "y_axis": 20, "lbl": "25%" },
-        { "x_axis": 1170, "y_axis": 97, "lbl": "Confidence Percentage" }];
+            { "x_axis": 903, "y_axis": 30, "width": 50, "height": 50 },
+            { "x_axis": 963, "y_axis": 37, "width": 37, "height": 37 },
+            { "x_axis": 1009, "y_axis": 44, "width": 25, "height": 25 },
+            { "x_axis": 1042, "y_axis": 51, "width": 12, "height": 12 }];
+        var jsonlegendLbl = [
+            { "x_axis": 900, "y_axis": 20, "lbl": "100%" },
+            { "x_axis": 1040, "y_axis": 20, "lbl": "25%" },
+            { "x_axis": 1150, "y_axis": 14, "lbl": "100%" },
+            { "x_axis": 1315, "y_axis": 16, "lbl": "25%" },
+            { "x_axis": 900, "y_axis": 97, "lbl": "Precipitation Confidence" },];
 
         var svgContainer = d3.select("body").append("svg")
-            .attr("height", 1)
+            .attr("height", 100)
+            .attr("width", 1400)
             .attr("class", "locations");
 
         // add rects
@@ -153,17 +270,16 @@
             .attr("y", function (d) { return d.y_axis; })
             .attr("width", function (d) { return d.width; })
             .attr("height", function (d) { return d.height; });
-
         //add text
         var legendlbls = svgContainer.selectAll("text")
             .data(jsonlegendLbl)
             .enter()
             .append("text");
+
         var textAttributes = legendlbls
             .attr("x", function (d) { return d.x_axis; })
             .attr("y", function (d) { return d.y_axis; })
-            .attr("font-size", "17px")
+            .attr("font-size", "10px")
             .text(function (d) { return d.lbl; });
     </script>
-
 </body>
