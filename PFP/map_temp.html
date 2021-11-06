@@ -161,16 +161,16 @@
                             labelOrigin: new google.maps.Point(30, 1)
                         }
                     });
-                    //fpr.put(rectangle, range_precipitation);
-                    //circle.addListener('click', function () {
-                    //    var cityname = d.key;
-                    //    if (cityname != null) {
-                    //        localStorage.setItem("cityname", cityname);
+                    
+                    circle.addListener('click', function () {
+                        var cityname = d.key;
+                        if (cityname != null) {
+                            localStorage.setItem("cityname", cityname);
 
-                    //        window.open("graph_temp.html");  // Change this to graph_temp.html when you commit the code to git
-                    //    }
+                            window.open("graph_temp.html");  // Change this to graph_temp.html when you commit the code to git
+                        }
 
-                    //});
+                    });
 
                     circle_list.push(circle);
                     /*rect_list.push(rectangle);*/
