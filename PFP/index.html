@@ -90,7 +90,7 @@
 
         // Headline
         var jsonOtherLbl = [
-            { "x_axis": 10, "y_axis": 20, "lbl": citynm + "-7 Day Forecast", "font_size": 48 },
+            { "x_axis": 10, "y_axis": 40, "lbl": citynm + "-7 Day Forecast", "font_size": 48 },
             { "x_axis": 100, "y_axis": 80, "lbl": "Monday", "font_size": 30 },
             { "x_axis": 500, "y_axis": 80, "lbl": "Tuesday", "font_size": 30 },
             { "x_axis": 900, "y_axis": 80, "lbl": "Wednesday", "font_size": 30 },
@@ -102,8 +102,10 @@
 
         var svgContainer = d3.select("body").append("svg")
             .attr("width", 2800)
-            .attr("height", 50)
+            .attr("height", 120)
+            .attr("padding", 10)
             .attr("class", "graph");
+
 
         var otherlbls = svgContainer.selectAll("text")
             .data(jsonOtherLbl)
@@ -426,7 +428,7 @@
                     var svg = d3.select("body")
                         .append("svg")
                         .attr("width", 200)
-                        .attr("height", 200);
+                        .attr("height", 350);
 
                     var imgs = svg.selectAll("image").data([0]);
                     imgs.enter()
