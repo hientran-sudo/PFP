@@ -8,7 +8,7 @@
     <!-- <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" />-->
     <link rel="stylesheet" href="graph_style-sheet.css" />
 
-    <script src="Scripts/bootstrap.min.js"></script>
+    <!--<script src="Scripts/bootstrap.min.js"></script>-->
 
 </head>
 <body>
@@ -17,6 +17,7 @@
         <input type="button" onclick="location.href = 'map_temp.html';" id="lbl1" value="Temperature" style="font-size:larger;">
         <input type="button" onclick="location.href = 'map_precip.html';" id="lbl2" value="Precipitation" style="font-size:larger;">
         <input type="button" onclick="location.href = 'map_both.html';" id="lbl2" value="Both" style="font-size:larger;">
+
     </div>
     <script src="//d3js.org/d3.v3.min.js"></script>
     <script>
@@ -426,50 +427,37 @@
                     }
 
                     var svg = d3.select("body")
-                        .append("svg")
+                        .append("svg")                     
                         .attr("width", 200)
                         .attr("height", 350);
-
                     var imgs = svg.selectAll("image").data([0]);
                     imgs.enter()
                         .append("svg:image")
-                        //.attr("xlink:href", "images/markers/customimg/avatar4.png")
                         .attr("xlink:href", "images/markers/customimg/" + avatarname + ".png")
-                        .attr("x", xpos)
-                        .attr("y", 90)
+                        .attr("x", "60")
+                        .attr("y", "90")
                         .attr("width", 170) //170
                         .attr("height", 250);  //250
 
-                    console.log(finalmedian);
-                    console.log(avatarname);
-                    console.log(finalconfi);
+                    
+                    //    .attr("x", xpos)
+                    //    .attr("y", 90)
 
+
+                    //console.log(finalmedian);
+                    //console.log(avatarname);
+                    //console.log(finalconfi);
+                    
                 });
-
             });
-
-
         }
 
         var allavatars = [60, 260, 460, 660, 860, 1060, 1260]; // x position for 7 avatars.
         for (var j = 0; j < allavatars.length; j++) {
             var daynum = "day" + j;
             decideavatar(daynum, allavatars[j]);
-            // console.log(avatarname);
-            /* var svg = d3.select("body")
-       .append("svg")
-       .attr("width", 200)
-       .attr("height", 230);
+            console.log(avatarname);
 
-        var imgs = svg.selectAll("image").data([0]);
-        imgs.enter()
-       .append("svg:image")
-       //.attr("xlink:href", "images/markers/customimg/avatar4.png")
-        .attr("xlink:href", "images/markers/customimg/"+returnparams[0]+".png")
-       .attr("x", allavatars[j])
-       .attr("y", 90)
-       .attr("width", 170)
-       .attr("height", 250);*/
         }
     </script>
 
