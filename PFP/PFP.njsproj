@@ -31,13 +31,25 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="images\AQ1.png" />
+    <Content Include="images\AQ2.png" />
+    <Content Include="images\AQ3.png" />
+    <Content Include="images\AQ4.png" />
+    <Content Include="images\AQ5.png" />
+    <Content Include="images\AQ6.png" />
     <Content Include="dist\app-bundle.js" />
     <Content Include="dist\app-bundle.js.map" />
+    <Content Include="Fri.json">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="graph_both.html" />
     <Content Include="graph_output.json" />
     <Content Include="graph_precip.html" />
     <Content Include="graph_style-sheet.css" />
     <Content Include="graph_temp.html" />
+    <Content Include="AQ.html">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="images\markers\customimg\0andBelow.png" />
     <Content Include="images\markers\customimg\0to5degree.png" />
     <Content Include="images\markers\customimg\10to15degree.png" />
@@ -82,23 +94,44 @@
     <Content Include="index.html">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="dropdown_locations.json">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="m3.png" />
     <Content Include="map_both.html" />
     <Content Include="map_output.json" />
     <Content Include="map_precip.html" />
     <Content Include="map_style-sheet.css" />
     <Content Include="map_temp.html" />
+    <Content Include="Mon.json">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="RealGraphData.json">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Sat.json">
       <SubType>Code</SubType>
     </Content>
     <Content Include="server.js" />
     <Content Include="package.json" />
     <Content Include="README.md" />
+    <Content Include="Sun.json">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Thu.json">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="tsconfig.json">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Tue.json">
       <SubType>Code</SubType>
     </Content>
     <Content Include="weather_back-GA.py" />
     <Content Include="webpack-config.js">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Wed.json">
       <SubType>Code</SubType>
     </Content>
   </ItemGroup>
